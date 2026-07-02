@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Daralabs — venture studio, building health technology since 2011</title>
+  <meta name="description" content="Daralabs AB is a venture studio in Göteborg, Sweden, building health technology since 2011 — hardware, software, design and regulatory work for its own ventures.">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Daralabs — venture studio">
+  <meta property="og:description" content="Building health technology since 2011. Göteborg, Sweden.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#faf9f6">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23141414'/><circle cx='16' cy='16' r='5' fill='%231f5f6b'/></svg>">
+  <style>
+    /* ── Design tokens ──────────────────────────────────────── */
+    :root {
+      /* Color */
+      --ink:        #141414;
+      --ink-soft:   #3a3a3a;
+      --muted:      #6b6b6b;
+      --line:       #e4e1da;
+      --line-faint: #eeece8;
+      --bg:         #faf9f6;
+      --bg-alt:     #f3f1ec;
+      --bg-dark:    #141414;
+      --accent:     #1f5f6b;
+      --accent-mid: #3a9aad;
+      --accent-deep:#164751;
+      --on-dark:    #b8b3aa;
+      --on-dark-em: #e9e6df;
+
+      /* Spacing scale (8px base) */
+      --s1: 0.5rem;    /* 8px  */
+      --s2: 0.75rem;   /* 12px */
+      --s3: 1rem;      /* 16px */
+      --s4: 1.5rem;    /* 24px */
+      --s5: 2rem;      /* 32px */
+      --s6: 3rem;      /* 48px */
+      --s7: 4.5rem;    /* 72px */
+      --s8: 6rem;      /* 96px */
+      --s9: 8rem;      /* 128px */
+
+      /* Type */
+      --font: system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif; /* deliberate system stack — no webfont, no CDN */
+      --maxw: 72rem;
+      --pad:  clamp(1.25rem, 5vw, 3rem);
+    }
+
+    /* ── Reset & base ───────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      font-size: 100%; /* 16px */
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    body {
+      font-family: var(--font);
+      color: var(--ink);
+      background: var(--bg);
+      font-size: 1.0625rem;   /* ~17px — body reads large */
+      line-height: 1.62;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    .wrap {
+      max-width: var(--maxw);
+      margin-inline: auto;
+      padding-inline: var(--pad);
+    }
+
+    /* ── Type scale (modular, ~1.25 ratio from 1.0625rem base) ─ */
+    /* display: ~4.25rem */
+    /* h2:      ~2.125rem */
+    /* h3:       1.375rem */
+    /* lede:     1.25rem  */
+    /* body:     1.0625rem*/
+    /* small:    0.875rem */
+    /* eyebrow:  0.75rem  */
+
+    h1, h2, h3 {
+      text-wrap: balance;
+      margin: 0;
+    }
+
+    p { text-wrap: pretty; }
+
+    /* ── Links ──────────────────────────────────────────────── */
+    a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-color: rgba(31, 95, 107, 0.35);
+      transition: color 0.15s ease, text-decoration-color 0.15s ease;
+    }
+    a:hover {
+      color: var(--accent-deep);
+      text-decoration-color: var(--accent-deep);
+    }
+    a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    /* ── Skip nav ───────────────────────────────────────────── */
+    .skip-nav {
+      position: absolute;
+      left: -9999px;
+      top: var(--s3);
+      padding: var(--s2) var(--s3);
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: 2px;
+      z-index: 100;
+      text-decoration: none;
+    }
+    .skip-nav:focus { left: var(--s3); }
+
+    /* ════════════════════════════════════════════════════════
+       MASTHEAD — wordmark row, pinned above the hero proper
+    ════════════════════════════════════════════════════════ */
+    .masthead {
+      padding-block: var(--s4) var(--s4);
+      border-bottom: 1px solid var(--line);
+    }
+    .masthead-inner {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--s3);
+    }
+    .wordmark {
+      font-size: 1.125rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      line-height: 1;
+    }
+    .wordmark .accent-dot {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Real Daralabs wordmark (inline SVG from the 2013 brand EPS) */
+    .wordmark .logo { height: 2.25rem; width: auto; display: block; color: var(--ink); }
+    .footer-wordmark .logo { height: 2.5rem; width: auto; display: block; color: var(--on-dark-em); }
+
+    .masthead-loc {
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       HERO — large display statement
+    ════════════════════════════════════════════════════════ */
+    .hero {
+      padding-block: clamp(4rem, 12vw, 7.5rem) clamp(3rem, 8vw, 5.5rem);
+    }
+    .hero-inner {
+      /* Two-column: statement left, ghost year right */
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: var(--s5);
+    }
+    .hero-statement {
+      /* Left column */
+    }
+    .hero-h1 {
+      font-size: clamp(2.625rem, 5.5vw, 4.25rem);
+      font-weight: 600;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      max-width: 18ch;
+    }
+    .hero-h1 .since {
+      color: var(--accent);
+      /* 'since 2011' in petrol for the founding date */
+    }
+    .hero-lede {
+      margin-top: clamp(1.25rem, 3vw, 1.875rem);
+      font-size: clamp(1.125rem, 2vw, 1.25rem);
+      line-height: 1.55;
+      color: var(--ink-soft);
+      max-width: 54ch;
+      font-weight: 400;
+    }
+
+    /* Ghost year — aria-hidden decorative anchor for the right column */
+    .hero-ghost {
+      font-size: clamp(5rem, 12vw, 9.5rem);
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      color: var(--line);
+      line-height: 0.85;
+      user-select: none;
+      padding-bottom: 0.15em; /* visual baseline align */
+      /* Aligns with baseline of h1 */
+    }
+
+    @media (max-width: 48rem) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+      }
+      .hero-ghost { display: none; }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       SECTION SCAFFOLDING — editorial grid layout
+    ════════════════════════════════════════════════════════ */
+    .section {
+      padding-block: clamp(3.5rem, 8vw, 5.5rem);
+      border-top: 1px solid var(--line);
+    }
+    .section--alt {
+      background: var(--bg-alt);
+    }
+
+    /* Asymmetric editorial grid: label column | content column */
+    .section-grid {
+      display: grid;
+      grid-template-columns: 14rem 1fr;
+      gap: var(--s6);
+      align-items: start;
+    }
+    @media (max-width: 52rem) {
+      .section-grid {
+        grid-template-columns: 1fr;
+        gap: var(--s4);
+      }
+    }
+
+    /* Label column */
+    .section-label {
+      /* eyebrow + h2 stacked */
+    }
+
+    .eyebrow {
+      margin-top: 0;
+      display: block;
+      font-size: 0.75rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+      line-height: 1;
+      margin-bottom: var(--s2);
+    }
+
+    .section-h2 {
+      margin: 0;
+      font-size: clamp(1.5rem, 2.75vw, 2rem);
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    /* Section index number — accent numeral beside heading */
+    .section-num {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-variant-numeric: tabular-nums;
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--s1);
+    }
+
+    /* ════════════════════════════════════════════════════════
+       VENTURES — substantial side-by-side panels
+    ════════════════════════════════════════════════════════ */
+    .ventures-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+    @media (max-width: 40rem) {
+      .ventures-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .venture-panel {
+      position: relative;
+      background: var(--bg);
+      padding: clamp(1.5rem, 4vw, 2.25rem);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Petrol edge — left accent bar, always visible, scaled from 2px to 4px on hover */
+    .venture-panel::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--accent);
+      transition: width 0.2s ease;
+    }
+    .venture-panel:hover::before {
+      width: 5px;
+    }
+
+    .venture-index {
+      font-size: 0.75rem;
+      font-variant-numeric: tabular-nums;
+      color: var(--muted);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--s4);
+      display: block;
+    }
+
+    .venture-panel h3 {
+      font-size: 1.375rem;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin-bottom: var(--s2);
+    }
+
+    .venture-panel p {
+      font-size: 1rem;
+      color: var(--ink-soft);
+      line-height: 1.55;
+      margin-bottom: var(--s3);
+      max-width: 40ch;
+    }
+
+    .venture-origin {
+      font-size: 0.8125rem;
+      color: var(--muted);
+      letter-spacing: 0.01em;
+      border-top: 1px solid var(--line);
+      padding-top: var(--s3);
+      margin-top: var(--s3);
+    }
+
+    .venture-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35em;
+      margin-top: auto;
+      padding-top: var(--s4);
+      font-weight: 600;
+      font-size: 0.9375rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: -0.005em;
+    }
+    .venture-link::after {
+      content: "→";
+      display: inline-block;
+      transition: transform 0.15s ease;
+    }
+    .venture-link:hover { color: var(--accent-deep); text-decoration: none; }
+    .venture-link:hover::after { transform: translateX(3px); }
+    .venture-link:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       TIMELINE — visual centrepiece
+    ════════════════════════════════════════════════════════ */
+    .timeline {
+      list-style: none;
+      position: relative;
+    }
+
+    /* Vertical axis line — left edge of event column */
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 7rem;
+      top: 0.6rem;
+      bottom: 0.6rem;
+      width: 1px;
+      background: var(--line);
+    }
+
+    .timeline li {
+      position: relative;
+      display: grid;
+      grid-template-columns: 7rem 1fr;
+      gap: 0;
+      padding-block: 0.9rem;
+    }
+
+    /* Founding year (2011) and spin-out year (2025) — bolder emphasis */
+    .timeline li.anchor .yr,
+    .timeline li.anchor .ev {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .timeline .yr {
+      font-variant-numeric: tabular-nums;
+      font-weight: 500;
+      font-size: 0.9375rem;
+      color: var(--muted);
+      text-align: right;
+      padding-right: 2rem;
+      padding-top: 0.1rem;
+      line-height: 1.5;
+    }
+
+    .timeline .ev {
+      font-size: 0.9375rem;
+      color: var(--ink-soft);
+      line-height: 1.55;
+      padding-left: 1.75rem;
+      max-width: 60ch;
+    }
+
+    /* Axis dot — solid petrol on anchors, hollow on others */
+    .timeline li::before {
+      content: "";
+      position: absolute;
+      left: calc(7rem - 4px);
+      top: 1.25rem;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--bg-alt);
+      border: 1.5px solid var(--accent);
+      z-index: 1;
+    }
+    .timeline li.anchor::before {
+      background: var(--accent);
+      border-color: var(--accent);
+      width: 9px;
+      height: 9px;
+      left: calc(7rem - 5px);
+      top: 1.2rem;
+    }
+
+    @media (max-width: 34rem) {
+      .timeline::before,
+      .timeline li::before { display: none; }
+      .timeline li {
+        grid-template-columns: 1fr;
+        gap: 0.2rem;
+        padding-block: 0.875rem;
+        border-bottom: 1px solid var(--line-faint);
+      }
+      .timeline .yr {
+        text-align: left;
+        padding-right: 0;
+        font-size: 0.8125rem;
+        letter-spacing: 0.04em;
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .timeline .ev {
+        padding-left: 0;
+      }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       CAPABILITIES — ruled 4-column grid
+    ════════════════════════════════════════════════════════ */
+    .caps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0 var(--s5);
+    }
+    @media (max-width: 52rem) {
+      .caps-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--s4) var(--s5);
+      }
+    }
+    @media (max-width: 32rem) {
+      .caps-grid {
+        grid-template-columns: 1fr;
+        gap: var(--s4);
+      }
+    }
+
+    .cap {
+      padding-top: var(--s4);
+      border-top: 1px solid var(--line);
+    }
+
+    .cap-label {
+      display: block;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: var(--s3);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .cap h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin-bottom: var(--s1);
+    }
+
+    .cap p {
+      font-size: 0.9375rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       FOOTER — dark bookend
+    ════════════════════════════════════════════════════════ */
+    footer {
+      background: var(--bg-dark);
+      padding-block: var(--s7) calc(var(--s7) + 0.5rem);
+      margin-top: 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--s2) var(--s4);
+    }
+
+    footer .footer-sep {
+      color: rgba(255,255,255,0.15);
+      user-select: none;
+    }
+
+    footer a {
+      color: var(--on-dark-em);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-color: rgba(255,255,255,0.25);
+    }
+    footer a:hover {
+      color: #fff;
+      text-decoration-color: rgba(255,255,255,0.6);
+    }
+    footer a:focus-visible {
+      outline-color: var(--accent-mid);
+    }
+
+    .footer-item {
+      font-size: 0.9375rem;
+      color: var(--on-dark);
+      font-weight: 400;
+    }
+
+    .footer-wordmark {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--on-dark-em);
+      letter-spacing: -0.01em;
+    }
+
+    .footer-wordmark .accent-dot {
+      color: var(--accent-mid);
+    }
+
+    /* Footer layout: wordmark on its own line above the contact row */
+    .footer-body {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s4);
+      width: 100%;
+    }
+
+    .footer-contact {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--s2) var(--s4);
+    }
+
+  </style>
+</head>
+<body>
+  <a class="skip-nav" href="#main">Skip to content</a>
+
+  <!-- ── Masthead ──────────────────────────────────────────── -->
+  <header>
+    <div class="masthead">
+      <div class="wrap">
+        <div class="masthead-inner">
+          <span class="wordmark"><svg class="logo" viewBox="52.4 63.7 219.2 106.2" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dara Labs" fill="currentColor"><path d="M 70.421875 130.203125 C 71.953125 130.554688 74.539062 130.554688 76.660156 130.554688 C 93.019531 130.671875 103.730469 121.726562 103.730469 102.777344 C 103.730469 86.304688 94.078125 77.59375 78.542969 77.59375 C 74.660156 77.59375 71.953125 77.945312 70.421875 78.300781 Z M 52.53125 65.589844 C 59.125 64.53125 67.714844 63.824219 76.660156 63.824219 C 91.84375 63.824219 101.730469 66.648438 109.261719 72.296875 C 117.5 78.417969 122.675781 88.1875 122.675781 102.191406 C 122.675781 117.375 117.144531 127.847656 109.613281 134.320312 C 101.257812 141.265625 88.429688 144.558594 72.894531 144.558594 C 63.597656 144.558594 56.886719 143.972656 52.53125 143.382812 L 52.53125 65.589844"/><path d="M 158.570312 116.550781 C 149.152344 116.550781 141.855469 118.785156 141.855469 125.613281 C 141.855469 130.203125 144.917969 132.4375 148.917969 132.4375 C 153.273438 132.4375 157.039062 129.496094 158.214844 125.847656 C 158.449219 124.90625 158.570312 123.847656 158.570312 122.785156 Z M 175.867188 129.847656 C 175.867188 135.261719 176.105469 140.558594 176.8125 143.734375 L 160.6875 143.734375 L 159.628906 137.96875 L 159.273438 137.96875 C 155.507812 142.558594 149.625 145.03125 142.796875 145.03125 C 131.144531 145.03125 124.203125 136.558594 124.203125 127.375 C 124.203125 112.429688 137.621094 105.367188 157.980469 105.367188 L 157.980469 104.664062 C 157.980469 101.484375 156.332031 97.128906 147.507812 97.128906 C 141.621094 97.128906 135.382812 99.132812 131.617188 101.484375 L 128.320312 89.949219 C 132.324219 87.714844 140.210938 84.773438 150.683594 84.773438 C 169.867188 84.773438 175.867188 96.070312 175.867188 109.722656 L 175.867188 129.847656"/><path d="M 184.222656 105.132812 C 184.222656 96.660156 184.105469 91.128906 183.753906 86.183594 L 199.054688 86.183594 L 199.761719 96.777344 L 200.230469 96.777344 C 203.171875 88.304688 210.117188 84.773438 215.765625 84.773438 C 217.414062 84.773438 218.234375 84.890625 219.53125 85.125 L 219.53125 101.957031 C 218.117188 101.71875 216.707031 101.484375 214.707031 101.484375 C 208.113281 101.484375 203.644531 105.015625 202.464844 110.546875 C 202.230469 111.722656 202.113281 113.136719 202.113281 114.546875 L 202.113281 143.734375 L 184.222656 143.734375 L 184.222656 105.132812"/><path d="M 252.367188 116.550781 C 242.949219 116.550781 235.652344 118.785156 235.652344 125.613281 C 235.652344 130.203125 238.714844 132.4375 242.714844 132.4375 C 247.070312 132.4375 250.835938 129.496094 252.011719 125.847656 C 252.246094 124.90625 252.367188 123.847656 252.367188 122.785156 Z M 269.664062 129.847656 C 269.664062 135.261719 269.902344 140.558594 270.605469 143.734375 L 254.484375 143.734375 L 253.425781 137.96875 L 253.070312 137.96875 C 249.304688 142.558594 243.421875 145.03125 236.59375 145.03125 C 224.941406 145.03125 218 136.558594 218 127.375 C 218 112.429688 231.417969 105.367188 251.777344 105.367188 L 251.777344 104.664062 C 251.777344 101.484375 250.128906 97.128906 241.304688 97.128906 C 235.417969 97.128906 229.179688 99.132812 225.414062 101.484375 L 222.117188 89.949219 C 226.121094 87.714844 234.007812 84.773438 244.480469 84.773438 C 263.664062 84.773438 269.664062 96.070312 269.664062 109.722656 L 269.664062 129.847656"/><path d="M 185.261719 150.332031 L 188.746094 150.332031 L 188.746094 166.519531 L 196.601562 166.519531 L 196.601562 169.441406 L 185.261719 169.441406 L 185.261719 150.332031"/><path d="M 217.1875 162.691406 C 214.722656 162.664062 212.371094 163.171875 212.371094 165.273438 C 212.371094 166.632812 213.25 167.257812 214.355469 167.257812 C 215.773438 167.257812 216.765625 166.351562 217.105469 165.359375 C 217.1875 165.101562 217.1875 164.847656 217.1875 164.59375 Z M 220.59375 166.121094 C 220.59375 167.371094 220.648438 168.589844 220.816406 169.441406 L 217.671875 169.441406 L 217.414062 167.910156 L 217.332031 167.910156 C 216.507812 168.988281 215.0625 169.75 213.25 169.75 C 210.472656 169.75 208.910156 167.738281 208.910156 165.640625 C 208.910156 162.183594 212 160.394531 217.105469 160.421875 L 217.105469 160.199219 C 217.105469 159.289062 216.734375 157.789062 214.296875 157.789062 C 212.9375 157.789062 211.519531 158.214844 210.585938 158.808594 L 209.902344 156.539062 C 210.925781 155.914062 212.710938 155.320312 214.894531 155.320312 C 219.316406 155.320312 220.59375 158.128906 220.59375 161.160156 L 220.59375 166.121094"/><path d="M 238.542969 163.742188 C 238.542969 164.023438 238.570312 164.308594 238.628906 164.5625 C 238.996094 165.980469 240.21875 167 241.71875 167 C 243.902344 167 245.234375 165.273438 245.234375 162.464844 C 245.234375 160.027344 244.070312 158.042969 241.746094 158.042969 C 240.328125 158.042969 239.023438 159.0625 238.65625 160.59375 C 238.601562 160.851562 238.542969 161.160156 238.542969 161.5 Z M 235.058594 149.3125 L 238.542969 149.3125 L 238.542969 157.53125 L 238.601562 157.53125 C 239.449219 156.199219 240.953125 155.320312 243.023438 155.320312 C 246.398438 155.320312 248.808594 158.128906 248.777344 162.324219 C 248.777344 167.285156 245.632812 169.75 242.511719 169.75 C 240.726562 169.75 239.140625 169.070312 238.144531 167.371094 L 238.089844 167.371094 L 237.921875 169.441406 L 234.941406 169.441406 C 235 168.503906 235.058594 166.972656 235.058594 165.554688 L 235.058594 149.3125"/><path d="M 262.28125 166.207031 C 263.046875 166.691406 264.546875 167.230469 265.796875 167.230469 C 267.324219 167.230469 268.007812 166.578125 268.007812 165.667969 C 268.007812 164.734375 267.441406 164.28125 265.738281 163.65625 C 263.046875 162.75 261.941406 161.273438 261.941406 159.628906 C 261.941406 157.191406 263.953125 155.320312 267.15625 155.320312 C 268.6875 155.320312 270.019531 155.691406 270.84375 156.144531 L 270.132812 158.582031 C 269.566406 158.242188 268.433594 157.789062 267.214844 157.789062 C 265.964844 157.789062 265.285156 158.410156 265.285156 159.261719 C 265.285156 160.140625 265.9375 160.539062 267.695312 161.191406 C 270.21875 162.070312 271.351562 163.34375 271.382812 165.386719 C 271.382812 167.910156 269.425781 169.722656 265.769531 169.722656 C 264.09375 169.722656 262.59375 169.328125 261.570312 168.757812 L 262.28125 166.207031"/></svg></span>
+          <span class="masthead-loc">G&ouml;teborg, Sweden</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Hero ─────────────────────────────────────────────── -->
+    <div class="hero">
+      <div class="wrap">
+        <div class="hero-inner">
+          <div class="hero-statement">
+            <h1 class="hero-h1">Venture studio. Building health technology <span class="since">since 2011.</span></h1>
+            <p class="hero-lede">We build our own health-technology ventures &mdash; bringing hardware, software, design and regulatory work together under one roof in G&ouml;teborg, Sweden.</p>
+          </div>
+          <span class="hero-ghost" aria-hidden="true">2011</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ── Ventures ─────────────────────────────────────────── -->
+    <section class="section" aria-labelledby="ventures-h">
+      <div class="wrap">
+        <div class="section-grid">
+
+          <div class="section-label">
+            <span class="section-num">01</span>
+            <h2 class="eyebrow" id="ventures-h">Ventures</h2>
+          </div>
+
+          <div>
+            <div class="ventures-grid">
+
+              <article class="venture-panel">
+                <span class="venture-index">01</span>
+                <h3>Dose Medbox</h3>
+                <p>Medication adherence &mdash; connected hardware paired with a companion app.</p>
+                <div class="venture-origin">Co-founded at Daralabs.</div>
+                <a class="venture-link" href="https://dosemedbox.com" rel="noopener">Visit Dose Medbox</a>
+              </article>
+
+              <article class="venture-panel">
+                <span class="venture-index">02</span>
+                <h3>ZiniaCare</h3>
+                <p>sEMG biofeedback for home-based stroke and brain-injury rehabilitation.</p>
+                <div class="venture-origin">Incubated at Daralabs, spun out as ZiniaCare AB.</div>
+                <a class="venture-link" href="https://ziniacare.com" rel="noopener">Visit ZiniaCare</a>
+              </article>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Track record ──────────────────────────────────────── -->
+    <section class="section section--alt" aria-labelledby="track-h">
+      <div class="wrap">
+        <div class="section-grid">
+
+          <div class="section-label">
+            <span class="section-num">02</span>
+            <h2 class="eyebrow" id="track-h">Track record</h2>
+            <p class="section-h2">Since 2011</p>
+          </div>
+
+          <div>
+            <ol class="timeline">
+              <li class="anchor">
+                <span class="yr">2011</span>
+                <span class="ev">Daralabs founded.</span>
+              </li>
+              <li>
+                <span class="yr">2012</span>
+                <span class="ev">Incubated at Sahlgrenska Science Park.</span>
+              </li>
+              <li>
+                <span class="yr">2014</span>
+                <span class="ev">Platform used in SCAPIS Wellness Profiling &mdash; part of the SCAPIS study (Swedish Heart-Lung Foundation, six university hospitals).</span>
+              </li>
+              <li>
+                <span class="yr">2014</span>
+                <span class="ev">Fertility venture begins as Isis (EU trademark registered 2014); ovulation-indicator prototypes 2015&ndash;2016; relaunched as MOON Fertility in 2016; wound down 2020.</span>
+              </li>
+              <li>
+                <span class="yr">mid-2010s</span>
+                <span class="ev">sEMG rehabilitation R&amp;D begins &mdash; the work that became ZiniaCare.</span>
+              </li>
+              <li>
+                <span class="yr">2016</span>
+                <span class="ev">Service agreement with Sahlgrenska University Hospital for the SCAPIS participant portal.</span>
+              </li>
+              <li>
+                <span class="yr">2018</span>
+                <span class="ev">Dose Medbox co-founded.</span>
+              </li>
+              <li>
+                <span class="yr">2018&ndash;2022</span>
+                <span class="ev">WearITmed research project (RISE Acreo, with Sahlgrenska Academy, the Swedish School of Textiles and Swerea IVF): Daralabs built the sensor-shirt central electronics unit and the clinical data-collection portal.</span>
+              </li>
+              <li class="anchor">
+                <span class="yr">2025</span>
+                <span class="ev">ZiniaCare AB founded &mdash; the sEMG rehabilitation venture spun out of Daralabs.</span>
+              </li>
+            </ol>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Capabilities ──────────────────────────────────────── -->
+    <section class="section" aria-labelledby="bring-h">
+      <div class="wrap">
+        <div class="section-grid">
+
+          <div class="section-label">
+            <span class="section-num">03</span>
+            <h2 class="eyebrow" id="bring-h">What we bring to our ventures</h2>
+          </div>
+
+          <div class="caps-grid">
+            <div class="cap">
+              <span class="cap-label">01</span>
+              <h3>Hardware</h3>
+              <p>From satellite-grade electronics heritage to connected medical devices.</p>
+            </div>
+            <div class="cap">
+              <span class="cap-label">02</span>
+              <h3>Software</h3>
+              <p>Apps, cloud services and data platforms.</p>
+            </div>
+            <div class="cap">
+              <span class="cap-label">03</span>
+              <h3>Design</h3>
+              <p>Product and interface design.</p>
+            </div>
+            <div class="cap">
+              <span class="cap-label">04</span>
+              <h3>Regulatory</h3>
+              <p>MDR Class IIa and FDA 510(k) pathway experience.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Footer — dark bookend ─────────────────────────────── -->
+  <footer aria-label="Site footer">
+    <div class="wrap">
+      <div class="footer-body">
+        <div>
+          <span class="footer-wordmark"><svg class="logo" viewBox="52.4 63.7 219.2 106.2" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dara Labs" fill="currentColor"><path d="M 70.421875 130.203125 C 71.953125 130.554688 74.539062 130.554688 76.660156 130.554688 C 93.019531 130.671875 103.730469 121.726562 103.730469 102.777344 C 103.730469 86.304688 94.078125 77.59375 78.542969 77.59375 C 74.660156 77.59375 71.953125 77.945312 70.421875 78.300781 Z M 52.53125 65.589844 C 59.125 64.53125 67.714844 63.824219 76.660156 63.824219 C 91.84375 63.824219 101.730469 66.648438 109.261719 72.296875 C 117.5 78.417969 122.675781 88.1875 122.675781 102.191406 C 122.675781 117.375 117.144531 127.847656 109.613281 134.320312 C 101.257812 141.265625 88.429688 144.558594 72.894531 144.558594 C 63.597656 144.558594 56.886719 143.972656 52.53125 143.382812 L 52.53125 65.589844"/><path d="M 158.570312 116.550781 C 149.152344 116.550781 141.855469 118.785156 141.855469 125.613281 C 141.855469 130.203125 144.917969 132.4375 148.917969 132.4375 C 153.273438 132.4375 157.039062 129.496094 158.214844 125.847656 C 158.449219 124.90625 158.570312 123.847656 158.570312 122.785156 Z M 175.867188 129.847656 C 175.867188 135.261719 176.105469 140.558594 176.8125 143.734375 L 160.6875 143.734375 L 159.628906 137.96875 L 159.273438 137.96875 C 155.507812 142.558594 149.625 145.03125 142.796875 145.03125 C 131.144531 145.03125 124.203125 136.558594 124.203125 127.375 C 124.203125 112.429688 137.621094 105.367188 157.980469 105.367188 L 157.980469 104.664062 C 157.980469 101.484375 156.332031 97.128906 147.507812 97.128906 C 141.621094 97.128906 135.382812 99.132812 131.617188 101.484375 L 128.320312 89.949219 C 132.324219 87.714844 140.210938 84.773438 150.683594 84.773438 C 169.867188 84.773438 175.867188 96.070312 175.867188 109.722656 L 175.867188 129.847656"/><path d="M 184.222656 105.132812 C 184.222656 96.660156 184.105469 91.128906 183.753906 86.183594 L 199.054688 86.183594 L 199.761719 96.777344 L 200.230469 96.777344 C 203.171875 88.304688 210.117188 84.773438 215.765625 84.773438 C 217.414062 84.773438 218.234375 84.890625 219.53125 85.125 L 219.53125 101.957031 C 218.117188 101.71875 216.707031 101.484375 214.707031 101.484375 C 208.113281 101.484375 203.644531 105.015625 202.464844 110.546875 C 202.230469 111.722656 202.113281 113.136719 202.113281 114.546875 L 202.113281 143.734375 L 184.222656 143.734375 L 184.222656 105.132812"/><path d="M 252.367188 116.550781 C 242.949219 116.550781 235.652344 118.785156 235.652344 125.613281 C 235.652344 130.203125 238.714844 132.4375 242.714844 132.4375 C 247.070312 132.4375 250.835938 129.496094 252.011719 125.847656 C 252.246094 124.90625 252.367188 123.847656 252.367188 122.785156 Z M 269.664062 129.847656 C 269.664062 135.261719 269.902344 140.558594 270.605469 143.734375 L 254.484375 143.734375 L 253.425781 137.96875 L 253.070312 137.96875 C 249.304688 142.558594 243.421875 145.03125 236.59375 145.03125 C 224.941406 145.03125 218 136.558594 218 127.375 C 218 112.429688 231.417969 105.367188 251.777344 105.367188 L 251.777344 104.664062 C 251.777344 101.484375 250.128906 97.128906 241.304688 97.128906 C 235.417969 97.128906 229.179688 99.132812 225.414062 101.484375 L 222.117188 89.949219 C 226.121094 87.714844 234.007812 84.773438 244.480469 84.773438 C 263.664062 84.773438 269.664062 96.070312 269.664062 109.722656 L 269.664062 129.847656"/><path d="M 185.261719 150.332031 L 188.746094 150.332031 L 188.746094 166.519531 L 196.601562 166.519531 L 196.601562 169.441406 L 185.261719 169.441406 L 185.261719 150.332031"/><path d="M 217.1875 162.691406 C 214.722656 162.664062 212.371094 163.171875 212.371094 165.273438 C 212.371094 166.632812 213.25 167.257812 214.355469 167.257812 C 215.773438 167.257812 216.765625 166.351562 217.105469 165.359375 C 217.1875 165.101562 217.1875 164.847656 217.1875 164.59375 Z M 220.59375 166.121094 C 220.59375 167.371094 220.648438 168.589844 220.816406 169.441406 L 217.671875 169.441406 L 217.414062 167.910156 L 217.332031 167.910156 C 216.507812 168.988281 215.0625 169.75 213.25 169.75 C 210.472656 169.75 208.910156 167.738281 208.910156 165.640625 C 208.910156 162.183594 212 160.394531 217.105469 160.421875 L 217.105469 160.199219 C 217.105469 159.289062 216.734375 157.789062 214.296875 157.789062 C 212.9375 157.789062 211.519531 158.214844 210.585938 158.808594 L 209.902344 156.539062 C 210.925781 155.914062 212.710938 155.320312 214.894531 155.320312 C 219.316406 155.320312 220.59375 158.128906 220.59375 161.160156 L 220.59375 166.121094"/><path d="M 238.542969 163.742188 C 238.542969 164.023438 238.570312 164.308594 238.628906 164.5625 C 238.996094 165.980469 240.21875 167 241.71875 167 C 243.902344 167 245.234375 165.273438 245.234375 162.464844 C 245.234375 160.027344 244.070312 158.042969 241.746094 158.042969 C 240.328125 158.042969 239.023438 159.0625 238.65625 160.59375 C 238.601562 160.851562 238.542969 161.160156 238.542969 161.5 Z M 235.058594 149.3125 L 238.542969 149.3125 L 238.542969 157.53125 L 238.601562 157.53125 C 239.449219 156.199219 240.953125 155.320312 243.023438 155.320312 C 246.398438 155.320312 248.808594 158.128906 248.777344 162.324219 C 248.777344 167.285156 245.632812 169.75 242.511719 169.75 C 240.726562 169.75 239.140625 169.070312 238.144531 167.371094 L 238.089844 167.371094 L 237.921875 169.441406 L 234.941406 169.441406 C 235 168.503906 235.058594 166.972656 235.058594 165.554688 L 235.058594 149.3125"/><path d="M 262.28125 166.207031 C 263.046875 166.691406 264.546875 167.230469 265.796875 167.230469 C 267.324219 167.230469 268.007812 166.578125 268.007812 165.667969 C 268.007812 164.734375 267.441406 164.28125 265.738281 163.65625 C 263.046875 162.75 261.941406 161.273438 261.941406 159.628906 C 261.941406 157.191406 263.953125 155.320312 267.15625 155.320312 C 268.6875 155.320312 270.019531 155.691406 270.84375 156.144531 L 270.132812 158.582031 C 269.566406 158.242188 268.433594 157.789062 267.214844 157.789062 C 265.964844 157.789062 265.285156 158.410156 265.285156 159.261719 C 265.285156 160.140625 265.9375 160.539062 267.695312 161.191406 C 270.21875 162.070312 271.351562 163.34375 271.382812 165.386719 C 271.382812 167.910156 269.425781 169.722656 265.769531 169.722656 C 264.09375 169.722656 262.59375 169.328125 261.570312 168.757812 L 262.28125 166.207031"/></svg></span>
+        </div>
+        <div class="footer-contact">
+          <a href="mailto:info@daralabs.com">info@daralabs.com</a>
+          <span class="footer-sep" aria-hidden="true">&middot;</span>
+          <span class="footer-item">G&ouml;teborg, Sweden</span>
+          <span class="footer-sep" aria-hidden="true">&middot;</span>
+          <span class="footer-item">Org.nr 556865-1268</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
